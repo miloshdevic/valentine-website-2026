@@ -240,3 +240,28 @@ function setupMusicPlayer() {
         }
     });
 } 
+
+function makeButtonRunAway(button) {
+    button.style.position = 'fixed';
+
+    const move = () => {
+        const x = Math.random() * (window.innerWidth - button.offsetWidth);
+        const y = Math.random() * (window.innerHeight - button.offsetHeight);
+        button.style.left = `${x}px`;
+        button.style.top = `${y}px`;
+    };
+
+    // Run away when mouse gets close
+    button.addEventListener('mouseenter', move);
+    button.addEventListener('mousemove', move);
+}
+
+// Apply to all NO buttons once page loads
+window.addEventListener('DOMContentLoaded', () => {
+    const noButtons = ['noBtn1', 'noBtn3'];
+
+    noButtons.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) makeButtonRunAway(btn);
+    });
+});
