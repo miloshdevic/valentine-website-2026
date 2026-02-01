@@ -47,7 +47,7 @@ const CONFIG = {
             noBtn: ""                                                  // No No button
         },
         fourth: {
-            text: "Emilija, will you bestow the honor of being my valentine? 😔🥀", // The big question!
+            text: "Emilija, will you bestow upon me the honor of being my valentine? 😔🥀", // The big question!
             yesBtn: "YES, A MILLION TIMES YES!!!",                     // Text for "Yes" button
             noBtn: "No",                                                // Runaway button
             candidates: {
