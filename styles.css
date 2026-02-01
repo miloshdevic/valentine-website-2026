@@ -31,9 +31,12 @@ body {
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 600px;
+    max-width: 900px;
     margin: 20px;
     overflow: visible !important;
+    position: relative;
+    z-index: 100;
+    transition: all 0.3s ease;
 }
 
 .floating-elements {
@@ -44,7 +47,8 @@ body {
     z-index: 1;
 }
 
-.heart, .bear {
+.heart,
+.bear {
     position: absolute;
     font-size: 2rem;
     animation: float var(--float-duration) linear infinite;
@@ -54,6 +58,7 @@ body {
     0% {
         transform: translateY(100vh) translateX(0);
     }
+
     100% {
         transform: translateY(-100px) translateX(var(--float-distance));
     }
@@ -232,6 +237,7 @@ body {
     from {
         transform: scale(1);
     }
+
     to {
         transform: scale(1.2);
     }
@@ -247,15 +253,18 @@ body {
     0% {
         transform: scale(0);
     }
+
     50% {
         transform: scale(var(--heart-explosion-size));
     }
+
     100% {
         transform: scale(1);
     }
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: Arial, sans-serif;
     font-weight: 700;
 }
@@ -288,9 +297,23 @@ h2 {
     text-shadow: 2px 2px 4px rgba(255, 71, 87, 0.3);
 }
 
+.celebration-image {
+    max-width: 300px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    display: block;
+    animation: bounce var(--bounce-speed) infinite alternate;
+}
+
 @keyframes subtle-hint {
-    0% { opacity: 0.2; }
-    100% { opacity: 0.3; }
+    0% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
 }
 
 .music-controls {
@@ -301,7 +324,7 @@ h2 {
 }
 
 .music-btn {
-    background: var(--primary-color);
+    background: var(--button-color);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -309,10 +332,243 @@ h2 {
     cursor: pointer;
     font-size: 16px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .music-btn:hover {
     transform: scale(1.05);
-    background: var(--secondary-color);
-} 
+    background: var(--button-hover);
+}
+
+.error-text {
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    animation: bounce var(--bounce-speed) infinite alternate;
+}
+
+.love-choices {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+}
+
+.countdown-timer {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--button-color);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.arrow-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.arrow {
+    font-size: 2rem;
+    animation: wiggle 1s infinite alternate;
+    color: var(--button-color);
+}
+
+@keyframes wiggle {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(10px);
+    }
+}
+
+.arrow.left {
+    transform: rotate(180deg);
+}
+
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--background-start), var(--background-end));
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out, visibility 0.8s;
+}
+
+.overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    color: var(--text-color);
+    padding: 20px;
+    animation: pulse 2s infinite;
+}
+
+.overlay-content h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.floating-photo {
+    position: fixed;
+    bottom: -100px;
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: floatUp var(--float-duration) linear infinite;
+    z-index: 1;
+    opacity: 0.9;
+    object-fit: cover;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+.reaction-img {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 15px;
+    display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reaction-container {
+    position: relative;
+    max-width: 250px;
+    margin: 20px auto;
+    animation: bounce 0.5s;
+}
+
+/* Matchmaking Visuals */
+.matchmaking-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    /* Reduced gap */
+    margin: 15px auto;
+    /* Reduced margin */
+}
+
+.candidate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.candidate-img {
+    width: 90px;
+    /* Smaller images */
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.candidate:hover .candidate-img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.candidate-label {
+    background: white;
+    padding: 3px 10px;
+    border-radius: 10px;
+    color: var(--button-color);
+    font-weight: bold;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.match-badge {
+    font-size: 2rem;
+    /* Smaller heart */
+    animation: heartBeat 1.5s infinite;
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.3);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.reaction-overlay-text {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #ff4757;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
