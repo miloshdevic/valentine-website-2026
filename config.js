@@ -49,7 +49,7 @@ const CONFIG = {
         fourth: {
             text: "Emilija, will you bestow upon me the honor of being my valentine? 😔🥀", // The big question!
             yesBtn: "YES, A MILLION TIMES YES!!!",                     // Text for "Yes" button
-            noBtn: "No",                                                // Runaway button
+            noBtn: "No (I dare you to click me)",                                                // Runaway button
             candidates: {
                 img1: "./dj_emila.JPG",
                 img2: "./cowboy_milos.JPG"
@@ -67,15 +67,16 @@ const CONFIG = {
 
     // Messages that appear after they say "Yes!"
     celebration: {
-        title: "Yay! I'm the luckiest person in the world! 🎉💝💖💝💓",
-        message: "Now come get your big warm hug and a huge kiss!",
+        title: "Yay! I knew you would say yes 😎, I'm the luckiest person in the world! 🎉🎉🎉",
+        message: "See you February 10th at 8pm at L'Auberge Saint-Gabriel for our 1 year anniversary ❤️",
         emojis: "🎁💖🤗💝💋❤️💕",  // These will bounce around
         image: "thug_milos.jpg", // DJ Khaled "Another One" / Win gif placeholder
         floatingImages: [
             "./together_1.JPEG", "./together_2.JPEG", "./together_3.JPG",
             "./together_5.JPG", "./together_6.jpg", "./together_7.jpg",
             "./together_8.JPG", "./together_9.JPG", "./together_10.JPG",
-            "./together_13.JPG"
+            "./together_13.JPG", "./together_16.jpeg", "./together_11.jpeg",
+            "./together_12.jpeg", "./together_14.jpeg", "./together_15.jpeg"
         ] // Photos to float during celebration
     },
 

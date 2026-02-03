@@ -183,6 +183,12 @@ function setRandomPosition(element) {
 
 // Function to show next question
 function showNextQuestion(questionNumber) {
+    // Intercept Question 4 for Loading Sequence
+    if (questionNumber === 4) {
+        handleLoadingSequence();
+        return;
+    }
+
     document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
     document.getElementById(`question${questionNumber}`).classList.remove('hidden');
 
@@ -439,8 +445,151 @@ function setupMusicPlayer() {
     });
 }
 
+// Inject styles for Loading Bar to ensure they load
+function injectLoadingStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .progress-bar-container {
+            width: 100%;
+            max-width: 400px;
+            height: 20px;
+            background-color: #ffe6e9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #ff4757;
+            display: block; /* Ensure visibility */
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff4757, #ff6b81);
+            border-radius: 8px;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Handle Loading Sequence before Q4
+function handleLoadingSequence() {
+    // Inject styles immediately
+    injectLoadingStyles();
+
+    // Hide all sections
+    document.querySelectorAll('.question-section').forEach(q => q.classList.add('hidden'));
+
+    // Show Loading Section
+    const loadingSection = document.getElementById('loading-section');
+    const loadingText = document.getElementById('loading-text');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const nervousText = document.getElementById('nervous-text');
+    const readyText = document.getElementById('ready-text');
+
+    if (!loadingSection || !progressBar) {
+        console.error("Missing loading elements!");
+        // Fallback
+        document.querySelector('.question-section#question4').classList.remove('hidden');
+        return;
+    }
+
+    loadingSection.classList.remove('hidden');
+
+    // Reset state
+    progressBar.style.width = '0%';
+    if (nervousText) nervousText.classList.add('hidden');
+    if (readyText) readyText.classList.add('hidden');
+    if (loadingText) loadingText.classList.remove('hidden');
+    if (progressContainer) progressContainer.classList.remove('hidden');
+
+    // Step 1: Animate Bar (0 -> 100% over 5s)
+    setTimeout(() => {
+        progressBar.style.width = '100%';
+        progressBar.style.transition = 'width 5s linear';
+    }, 100);
+
+    // Step 2: Show Nervous Text after bar finishes (5s)
+    setTimeout(() => {
+        if (loadingText) loadingText.classList.add('hidden');
+        if (progressContainer) progressContainer.classList.add('hidden');
+        if (nervousText) nervousText.classList.remove('hidden');
+    }, 5100);
+
+    // Step 3: Show Ready Text (5s after nervous text = 10.1s total)
+    setTimeout(() => {
+        if (nervousText) nervousText.classList.add('hidden');
+        if (readyText) readyText.classList.remove('hidden');
+    }, 10100);
+
+    // Step 4: Move to Question 4 (3s after ready text = 13.1s total)
+    setTimeout(() => {
+        loadingSection.classList.add('hidden');
+        document.querySelector('.question-section#question4').classList.remove('hidden');
+
+        // Initialize the Matchmaking Candidates and Button Logic for Q4
+        const noBtn = document.getElementById('noBtn4');
+        if (noBtn) makeButtonRunAway(noBtn);
+
+    }, 13100);
+}
+
+// Inject styles for the troll bubble dynamically to ensure they ensure load
+function injectTrollStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .troll-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .thought-bubble-v2 {
+            position: absolute;
+            bottom: 40px; /* Above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            color: #333;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-weight: bold;
+            border: 2px solid #333;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            animation: popIn 0.3s forwards;
+        }
+
+        .thought-bubble-v2::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 function makeButtonRunAway(button) {
     if (!button) return;
+
+    // Inject the styles once
+    injectTrollStyles();
 
     // Initially, let it sit in the natural flow (static) so it appears next to the Yes button
     button.style.transition = 'all 0.2s ease'; // Smooth movement
@@ -449,6 +598,12 @@ function makeButtonRunAway(button) {
         // Switch to fixed positioning on first interaction to allow movement
         if (button.style.position !== 'fixed') {
             button.style.position = 'fixed';
+
+            // Add Troll Face and Thought Bubble
+            button.innerHTML = `No 
+                <img src="./troll.png" class="troll-face" alt="Troll" style="width: 25px; height: 25px;">
+                <div class="thought-bubble-v2">you will never catch me</div>
+            `;
         }
 
         const x = Math.random() * (window.innerWidth - button.offsetWidth);
@@ -458,12 +613,17 @@ function makeButtonRunAway(button) {
     };
 
     // Run away when mouse gets close
-    button.addEventListener('mouseenter', move);
-    button.addEventListener('mousemove', move);
+    // WAITING PERIOD: Don't run away immediately!
+    // This prevents accidental triggers if the mouse is already there.
+    setTimeout(() => {
+        button.addEventListener('mouseenter', move);
+        button.addEventListener('mousemove', move);
+    }, 2000); // 2 second safety buffer
 }
 
 // Apply to No button once page loads
-window.addEventListener('DOMContentLoaded', () => {
-    const noButton = document.getElementById('noBtn4');
-    if (noButton) makeButtonRunAway(noButton);
-});
+// Apply to No button once page loads
+// window.addEventListener('DOMContentLoaded', () => {
+//     const noButton = document.getElementById('noBtn4');
+//     if (noButton) makeButtonRunAway(noButton);
+// });
